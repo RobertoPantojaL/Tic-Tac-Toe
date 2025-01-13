@@ -1,352 +1,171 @@
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-class tictactoe implements ActionListener
-{
-	Frame f;
-	JTextField tf1;
-	JButton res;
-	int count = 0;
-		int count00=0;
-		int count01=0;
-		int count02=0;
-		int count10=0;
-		int count11=0;
-		int count12=0;
-		int count20=0;
-		int count21=0;
-		int count22=0;
-	JButton b[][]= {
-		{new JButton (),new JButton (),new JButton ()},
-		{new JButton (),new JButton (),new JButton ()},
-		{new JButton (),new JButton (),new JButton ()},
-		};
-	tictactoe()
-	{
-	res = new JButton("Reset button");
-	res.setBounds(118,510,150,50);
-	f = new Frame();
-	tf1=new JTextField("Black's Turn");
-	tf1.setHorizontalAlignment(JTextField.CENTER);
-	tf1.setBounds(40,50,303,50);
-	res.addActionListener(this);
-	
-	for(int i=0;i<3;i++)
-	{
-		for(int j=0;j<3;j++)
-		{
-		b[i][j].addActionListener(this);
-		}
-	}
-		
-	f.add(tf1);
-	f.add(res);
-	
-	f.addWindowListener(new WindowEventListener());
-	int x=40,y=200,width_=100,height_=100;
-	for(int i=0;i<3;i++)
-	{
-		for(int j=0;j<3;j++)
-		{
-		b[i][j].setBounds(x,y,width_,height_);
-		f.add(b[i][j]);
-		x=x+103;
-		}
-	y=y+100;
-	x=40;	
-	}
-	Toolkit t=f.getToolkit();
-	Dimension screensize= t.getScreenSize();
-	int width=screensize.width*3/10;
-	int height=screensize.height*8/10;
-	f.setBounds(width/4,height/6,width,height);
-	f.setLayout(null);
-	f.setVisible(true);
-	}
+public class TicTacToe extends JFrame implements ActionListener {
+    private JButton[][] buttons = new JButton[3][3];
+    private JLabel turnLabel;
+    private JLabel scoreLabel;
+    private boolean isXTurn = true;
+    private int xWins = 0;
+    private int oWins = 0;
+    private boolean isDarkMode = true;
 
-	public void actionPerformed(ActionEvent e)
-	{
-		
-		
-				if(e.getSource()==b[0][0])
-				{	
-					
-					
-					if(count00==0)
-					{
-						count00=1;
-					if(count%2==0)
-					{
-						tf1.setText("White's Turn");
-						b[0][0].setText("X");
-						b[0][0].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-					else
-					{
-						tf1.setText("Black's Turn");
-						b[0][0].setText("O");
-						b[0][0].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-					count++;
-					}
-				
-				}
-				if(e.getSource()==b[0][1])
-				{
-					
-					if(count01==0)
-					{
-											count01=1;
+    public TicTacToe() {
+        setTitle("Tic Tac Toe - Dark & Light Mode");
+        setSize(400, 500);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
 
-					if(count%2==0)
-					{
-						tf1.setText("White's Turn");
-						b[0][1].setText("X");
-						b[0][1].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-					else
-					{
-						tf1.setText("Black's Turn");
-						b[0][1].setText("O");
-						b[0][1].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-					count++;
-					}
-				
-				}
-				if(e.getSource()==b[0][2])
-				{
-					
-					if(count02==0)
-					{
-											count02=1;
+        // Score and turn panel
+        JPanel scorePanel = new JPanel();
+        scorePanel.setLayout(new GridLayout(2, 1));
+        scorePanel.setPreferredSize(new Dimension(400, 50));
+        turnLabel = new JLabel("Turn: X", JLabel.CENTER);
+        scoreLabel = new JLabel("X Wins: 0 | O Wins: 0", JLabel.CENTER);
+        scorePanel.add(turnLabel);
+        scorePanel.add(scoreLabel);
 
-					if(count%2==0)
-					{
-						tf1.setText("White's Turn");
-						b[0][2].setText("X");
-						b[0][2].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-					else
-					{
-						tf1.setText("Black's Turn");
-						b[0][2].setText("O");
-						b[0][2].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-									count++;
+        // Game grid
+        JPanel gridPanel = new JPanel();
+        gridPanel.setLayout(new GridLayout(3, 3));
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                buttons[i][j] = new JButton("");
+                buttons[i][j].setFont(new Font("Arial", Font.BOLD, 30));
+                buttons[i][j].addActionListener(this);
+                gridPanel.add(buttons[i][j]);
+            }
+        }
 
-					}
-				}
-				if(e.getSource()==b[1][0])
-				{
-					
-					if(count10==0)
-					{
-											count10=1;
+        // Theme toggle button
+        JButton themeButton = new JButton("Toggle Theme");
+        themeButton.addActionListener(e -> toggleTheme());
 
-					if(count%2==0)
-					{
-						tf1.setText("White's Turn");
-						b[1][0].setText("X");
-						b[1][0].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-					else
-					{
-						tf1.setText("Black's Turn");
-						b[1][0].setText("O");
-						b[1][0].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-					count++;
-					}
-				
-				}
-				if(e.getSource()==b[1][1])
-				{
-					
-					if(count11==0)
-					{
-											count11=1;
+        // Add panels to the frame
+        add(scorePanel, BorderLayout.NORTH);
+        add(gridPanel, BorderLayout.CENTER);
+        add(themeButton, BorderLayout.SOUTH);
 
-					if(count%2==0)
-					{
-						tf1.setText("White's Turn");
-						b[1][1].setText("X");
-						b[1][1].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-					else
-					{
-						tf1.setText("Black's Turn");
-						b[1][1].setText("O");
-						b[1][1].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-									count++;
+        // Set initial theme
+        setDarkMode();
+        setVisible(true);
+    }
 
-					}
-				}
-				if(e.getSource()==b[1][2])
-				{
-					
-					if(count12==0)
-					{
-											count12=1;
+    private void toggleTheme() {
+        isDarkMode = !isDarkMode;
+        if (isDarkMode) {
+            setDarkMode();
+        } else {
+            setLightMode();
+        }
+    }
 
-					if(count%2==0)
-					{
-						tf1.setText("White's Turn");
-						b[1][2].setText("X");
-						b[1][2].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-					else
-					{
-						tf1.setText("Black's Turn");
-						b[1][2].setText("O");
-						b[1][2].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-									count++;
+    private void setDarkMode() {
+        getContentPane().setBackground(Color.BLACK);
+        turnLabel.setForeground(Color.BLACK);
+        scoreLabel.setForeground(Color.BLACK);
 
-					}
-				}
-				if(e.getSource()==b[2][0])
-				{
-					
-					if(count20==0)
-					{
-											count20=1;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                buttons[i][j].setBackground(Color.DARK_GRAY);
+                buttons[i][j].setForeground(Color.YELLOW);
+            }
+        }
+    }
 
-					if(count%2==0)
-					{
-						tf1.setText("White's Turn");
-						b[2][0].setText("X");
-						b[2][0].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-					else
-					{
-						tf1.setText("Black's Turn");
-						b[2][0].setText("O");
-						b[2][0].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-									count++;
+    private void setLightMode() {
+        getContentPane().setBackground(Color.WHITE);
+        turnLabel.setForeground(Color.BLUE);
+        scoreLabel.setForeground(Color.RED);
 
-					}
-				}
-				if(e.getSource()==b[2][1])
-				{
-					
-					if(count21==0)
-					{
-											count21=1;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                buttons[i][j].setBackground(Color.LIGHT_GRAY);
+                buttons[i][j].setForeground(Color.BLACK);
+            }
+        }
+    }
 
-					if(count%2==0)
-					{
-						tf1.setText("White's Turn");
-						b[2][1].setText("X");
-						b[2][1].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-					else
-					{
-						tf1.setText("Black's Turn");
-						b[2][1].setText("O");
-						b[2][1].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-									count++;
+    private void resetBoard() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                buttons[i][j].setText("");
+                buttons[i][j].setEnabled(true);
+            }
+        }
+        isXTurn = true;
+        turnLabel.setText("Turn: X");
+    }
 
-					}
-				}
-				
-				if(e.getSource()==b[2][2])
-				{
-					
-					if(count22==0)
-					{
-											count22=1;
+    private void checkWinner() {
+        String winner = null;
 
-					if(count%2==0)
-					{
-						tf1.setText("White's Turn");
-						b[2][2].setText("X");
-						b[2][2].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-					else
-					{
-						tf1.setText("Black's Turn");
-						b[2][2].setText("O");
-						b[2][2].setFont(new Font("Arial", Font.PLAIN, 50));
-					}
-									count++;
+        // Check rows, columns, and diagonals
+        for (int i = 0; i < 3; i++) {
+            if (buttons[i][0].getText().equals(buttons[i][1].getText()) &&
+                buttons[i][1].getText().equals(buttons[i][2].getText()) &&
+                !buttons[i][0].getText().isEmpty()) {
+                winner = buttons[i][0].getText();
+            }
+            if (buttons[0][i].getText().equals(buttons[1][i].getText()) &&
+                buttons[1][i].getText().equals(buttons[2][i].getText()) &&
+                !buttons[0][i].getText().isEmpty()) {
+                winner = buttons[0][i].getText();
+            }
+        }
 
-					}
-				}
-				if( (b[0][0].getText()=="X" &&  b[0][1].getText()=="X" &&  b[0][2].getText()=="X") 
-				|| (b[1][0].getText()=="X" &&  b[1][1].getText()=="X" &&  b[1][2].getText()=="X")
-				|| (b[2][0].getText()=="X" &&  b[2][1].getText()=="X" &&  b[2][2].getText()=="X")
-				||(b[0][0].getText()=="X" &&  b[1][0].getText()=="X" &&  b[2][0].getText()=="X") 
-				|| (b[0][1].getText()=="X" &&  b[1][1].getText()=="X" &&  b[2][1].getText()=="X")
-				|| (b[0][2].getText()=="X" &&  b[1][2].getText()=="X" &&  b[2][2].getText()=="X")
-				|| (b[0][0].getText()=="X" &&  b[1][1].getText()=="X" &&  b[2][2].getText()=="X")
-				|| (b[0][2].getText()=="X" &&  b[1][1].getText()=="X" &&  b[2][0].getText()=="X"))
-				{
-					tf1.setText("BLACK WINS....!");
-					tf1.setBackground(Color.PINK);
-					for(int i=0;i<3;i++)
-						{
-							for(int j=0;j<3;j++)
-								{
-									b[i][j].setBackground(Color.BLACK);
-								}
-						}
-				}
-				else if((b[0][0].getText()=="O" &&  b[0][1].getText()=="O" &&  b[0][2].getText()=="O") 
-				|| (b[1][0].getText()=="O" &&  b[1][1].getText()=="O" &&  b[1][2].getText()=="O")
-				|| (b[2][0].getText()=="O" &&  b[2][1].getText()=="O" &&  b[2][2].getText()=="O")
-				|| (b[0][0].getText()=="O" &&  b[1][0].getText()=="O" &&  b[2][0].getText()=="O") 
-				|| (b[0][1].getText()=="O" &&  b[1][1].getText()=="O" &&  b[2][1].getText()=="O")
-				|| (b[0][2].getText()=="O" &&  b[1][2].getText()=="O" &&  b[2][2].getText()=="O")
-				|| (b[0][0].getText()=="O" &&  b[1][1].getText()=="O" &&  b[2][2].getText()=="O")
-				|| (b[0][2].getText()=="O" &&  b[1][1].getText()=="O" &&  b[2][0].getText()=="O"))
-				{
-					tf1.setText("WHITE WINS....!");
-					tf1.setBackground(Color.PINK);
-					for(int i=0;i<3;i++)
-						{
-							for(int j=0;j<3;j++)
-								{
-									b[i][j].setBackground(Color.WHITE);
-								}
-						}
-				}
-				if(count==9)
-				{
-					
-					tf1.setText("GAME OVER");
-					for(int i=0;i<3;i++)
-						{
-							for(int j=0;j<3;j++)
-								{
-									b[i][j].setBackground(Color.RED);
-								}
-						}
-					
-				}
-				
-				if(e.getSource()==res)
-				{
-					new tictactoe();
-				}
-	}
-	public static void main(String... s)
-	{
-		new tictactoe();
-	}
-}
+        if (buttons[0][0].getText().equals(buttons[1][1].getText()) &&
+            buttons[1][1].getText().equals(buttons[2][2].getText()) &&
+            !buttons[0][0].getText().isEmpty()) {
+            winner = buttons[0][0].getText();
+        }
 
+        if (buttons[0][2].getText().equals(buttons[1][1].getText()) &&
+            buttons[1][1].getText().equals(buttons[2][0].getText()) &&
+            !buttons[0][2].getText().isEmpty()) {
+            winner = buttons[0][2].getText();
+        }
 
+        if (winner != null) {
+            JOptionPane.showMessageDialog(this, "Player " + winner + " wins!");
+            if (winner.equals("X")) {
+                xWins++;
+            } else {
+                oWins++;
+            }
+            scoreLabel.setText("X Wins: " + xWins + " | O Wins: " + oWins);
+            resetBoard();
+        } else {
+            boolean draw = true;
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (buttons[i][j].getText().isEmpty()) {
+                        draw = false;
+                        break;
+                    }
+                }
+            }
+            if (draw) {
+                JOptionPane.showMessageDialog(this, "It's a draw!");
+                resetBoard();
+            }
+        }
+    }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JButton clickedButton = (JButton) e.getSource();
+        if (clickedButton.getText().isEmpty()) {
+            clickedButton.setText(isXTurn ? "X" : "O");
+            isXTurn = !isXTurn;
+            turnLabel.setText("Turn: " + (isXTurn ? "X" : "O"));
+            checkWinner();
+        }
+    }
 
-class WindowEventListener extends WindowAdapter
-{
-	public void windowClosing(WindowEvent e1)
-	{
-		System.exit(0);
-	}
+    public static void main(String[] args) {
+        new TicTacToe();
+    }
 }
